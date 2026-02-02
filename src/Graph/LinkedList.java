@@ -28,12 +28,16 @@ public class LinkedList<T> {
         return last;
     }
     
-    public void printList(){
+    
+    @Override
+    public String toString(){
+        String s="";
         Node n=first;
         while(n!=null){
-            System.out.print(n.data+"->");
+            s=s.concat(n.data+"->");
             n=n.next;
         }
-        System.out.println("null");
+        s=s.concat("null");
+        return s;
     }
 }

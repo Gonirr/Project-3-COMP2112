@@ -1,9 +1,9 @@
 package Graph;
 public class GraphList {
-    int V;
-    int E;
-    LinkedList<Integer> adj[];
-    GraphList(int V,int E){
+    private int V;
+    private int E;
+    LinkedList<Edge> adj[];
+    public GraphList(int V,int E){
         this.V=V;
         this.E=E;
         adj=new LinkedList[V];
@@ -12,8 +12,19 @@ public class GraphList {
         }
     }    
     
-    void addEdge(int v1,int v2,int weight){
-        adj[v1].addLast(v2);
+    public void addEdge(int v1,int v2,int weight){
+        Edge e1=new Edge(v1,v2,weight);
+        adj[v1].addLast(e1);
+        Edge e2=new Edge(v2,v1,weight);
+        adj[v2].addLast(e2);
     }
     
+    @Override
+    public String toString(){
+        String s="";
+        for(int i=0;i<adj.length;i++){
+            s=s.concat(i+": "+adj[i].toString()+"\n");
+        }
+        return s;
+    }
 }

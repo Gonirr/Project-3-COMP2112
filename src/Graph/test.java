@@ -1,10 +1,10 @@
 package Graph;
 public class test {
     public static void main(String[] args) {
-        LinkedList<Integer> list=new LinkedList();
-        list.addLast(0);
-        list.addLast(2);
-        list.printList();
+        GraphList g=new GraphList(4,4);
+        g.addEdge(1, 2, 9);
+        g.addEdge(1, 0, 3);
+        System.out.println(g.toString());
     }
     
 }
