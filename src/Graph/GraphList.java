@@ -2,7 +2,7 @@ package Graph;
 public class GraphList {
     private int V;
     private int E;
-    LinkedList<Edge> adj[];
+    private LinkedList<Edge> adj[];
     public GraphList(int V,int E){
         this.V=V;
         this.E=E;
@@ -27,4 +27,9 @@ public class GraphList {
         }
         return s;
     }
+
+    public LinkedList<Edge>[] getAdj() {
+        return adj;
+    }
+    
 }

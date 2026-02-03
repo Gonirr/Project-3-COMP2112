@@ -2,11 +2,14 @@ package raceofrandom;
 import Graph.GraphList;
 import java.io.InputStream;
 import java.util.Scanner;
+import javax.swing.JFrame;
 
 public class RaceOfRandom {
     public static void main(String[] args) {
         GraphList racetrack=read("/racetrack.txt");
-        System.out.println(racetrack.toString());
+        //System.out.println(racetrack.toString());
+        GameFrame gameframe=new GameFrame();
+        
     }
     
     public static GraphList read(String resource){

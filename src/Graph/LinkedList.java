@@ -2,6 +2,7 @@ package Graph;
 public class LinkedList<T> {
     private Node first;
     private Node last;
+    private static int nodeNum=0;
     
     LinkedList(){
         first=null;
@@ -18,6 +19,7 @@ public class LinkedList<T> {
             last.next=n;
             last=last.next;
         }
+        nodeNum++;
     }
 
     public Node getFirst() {
@@ -40,4 +42,9 @@ public class LinkedList<T> {
         s=s.concat("null");
         return s;
     }
+
+    public static int getNodeNum() {
+        return nodeNum;
+    }
+    
 }

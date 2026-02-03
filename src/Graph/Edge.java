@@ -25,6 +25,6 @@ public class Edge {
     
     @Override
     public String toString(){
-        return v1+","+v2+","+weigth;
+        return "("+v1+","+v2+") "+weigth;
     }
 }
