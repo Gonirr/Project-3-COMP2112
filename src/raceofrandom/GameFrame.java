@@ -21,17 +21,22 @@ public class GameFrame extends JFrame{
         this.setLayout(card);
         gamepanel=new GamePanel();
         ınputpanel=new JPanel();
+        ınputpanel.setPreferredSize(new Dimension(320,60));
         JTextField text=new JTextField(10);
         JButton button=new JButton("submit");
-        JLabel label=new JLabel("Please enter how many cars you want in the race(0-15):");
+        JLabel label=new JLabel("Please enter how many cars you want in the race (1-15):");
         
         
         button.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
+                
                 String s=text.getText();
                 if(stringCheck(s)){
-                    card.next(getContentPane());
+                    card.last(getContentPane());
+                }
+                else{
+                    label.setText("Wrong input, please choose a integer between (1-15):");
                 }
             }
         });
@@ -40,12 +45,11 @@ public class GameFrame extends JFrame{
         ınputpanel.add(button);
         this.add(ınputpanel);
         this.add(gamepanel);
-        
-        
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        //this.setResizable(false);
-        this.setSize(new Dimension(500,500));
+        this.setResizable(false);
+        //this.setSize(new Dimension(500,500));
         this.setLocationRelativeTo(null);
+        this.pack();
         this.setVisible(true);
         
     }
@@ -53,7 +57,7 @@ public class GameFrame extends JFrame{
     public boolean stringCheck(String s){
         try{
             int is=Integer.parseInt(s);
-            if(is<=15){
+            if(0<is&&is<=15){
                 return true;
             }
             return false;
