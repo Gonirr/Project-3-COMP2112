@@ -21,7 +21,7 @@ public class GameFrame extends JFrame{
     GameFrame(){
         card=new CardLayout();
         this.setLayout(card);
-        gamepanel=new GamePanel();
+        
         ınputpanel=new JPanel();
         ınputpanel.setPreferredSize(new Dimension(320,60));
         JTextField text=new JTextField(10);
@@ -36,8 +36,8 @@ public class GameFrame extends JFrame{
                 
                 String s=text.getText();
                 if(stringCheck(s)){
+                    redoFrame(Integer.parseInt(s));
                     card.last(getContentPane());
-                    redoFrame();
                 }
                 else{
                     label.setText("Wrong input, please choose a integer between (1-"+carLimit+"}:");
@@ -50,7 +50,6 @@ public class GameFrame extends JFrame{
         ınputpanel.add(text);
         ınputpanel.add(button);
         this.add(ınputpanel);
-        this.add(gamepanel);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
         //this.setPreferredSize(new Dimension(500,500));
@@ -70,8 +69,11 @@ public class GameFrame extends JFrame{
         }
         catch(NumberFormatException e){return false;}
     }
-    public void redoFrame(){
-        gamepanel.setPreferredSize(new Dimension(gamepanel.width,gamepanel.height));
+    
+    public void redoFrame(int carNum){
+        gamepanel=new GamePanel(carNum);
+        this.add(gamepanel);
+        //gamepanel.setPreferredSize(new Dimension(gamepanel.getWidth(),gamepanel.getHeight()));
         this.pack();
         this.setLocationRelativeTo(null);
     }

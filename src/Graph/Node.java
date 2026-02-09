@@ -7,5 +7,13 @@ public class Node <T>{
         this.data=data;
         next=null;
     }
+
+    public T getData() {
+        return data;
+    }
+
+    public Node getNext() {
+        return next;
+    }
     
 }

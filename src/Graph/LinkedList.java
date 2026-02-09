@@ -2,7 +2,7 @@ package Graph;
 public class LinkedList<T> {
     private Node first;
     private Node last;
-    private static int nodeNum=0;
+    private int nodeNum=0;
     
     LinkedList(){
         first=null;
@@ -43,7 +43,7 @@ public class LinkedList<T> {
         return s;
     }
 
-    public static int getNodeNum() {
+    public int getNodeNum() {
         return nodeNum;
     }
     
