@@ -8,6 +8,7 @@ public class Car {
     int currV=0;
     Rectangle r;
     int currentV=0;
+    int road=0;
     
     Car(){
         ID++;

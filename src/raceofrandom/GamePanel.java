@@ -5,9 +5,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel implements Runnable{
     
     GraphList racetrack;
     
@@ -17,26 +19,30 @@ public class GamePanel extends JPanel {
     final int Width=1400;
     int scaleh;
     int scalew;
+    int weightSum;
+    final int FPS=60;
     
     private int carNum;
     Car[] cars;
-
+    Thread time;
+    
     GamePanel(int carNum){
         racetrack=read("/racetrack.txt");
-        System.out.println(racetrack.toString());
-        
         this.carNum=carNum;
         cars=new Car[carNum];
         for(int i=0;i<cars.length;i++){
             cars[i]=new Car();
         }
-        int weightSum=racetrack.getWeightSum();
+        this.weightSum=racetrack.getWeightSum();
         scaleh=Height/weightSum;
         scalew=Width/weightSum;
         this.height=scaleh*weightSum;
         this.width=scalew*weightSum;
-        //System.out.println("w:"+width+" h:"+height+" sum:"+weightSum);
         this.setPreferredSize(new Dimension(width,height));
+        startGame();
+        //System.out.println("w:"+width+" h:"+height+" sum:"+weightSum);
+        //System.out.println("scalew:"+scalew);
+        //System.out.println(racetrack.toString());
     }
     
     public GraphList read(String resource){
@@ -67,10 +73,37 @@ public class GamePanel extends JPanel {
         Graphics2D g2d=(Graphics2D) g;
         int partion=height/(carNum+1);
         for(int i=0;i<cars.length;i++){
-            int rectLength=scalew*cars[i].chooseRandomCheckpoint(racetrack)*4;
+            cars[i].road+=scalew*cars[i].chooseRandomCheckpoint(racetrack);
             //System.out.println(rectLength);
             //g2d.drawRect(, , 100, 100);
-            g2d.fillRect(100, partion*(i+1), rectLength, 100);
+            g2d.fillRect(0, partion*(i+1), cars[i].road, 100);
+            //System.out.println(i);
         }
+        
+        for(int i=0;i<scalew;i++){
+            g2d.drawLine(weightSum*i, 0, weightSum*i, height);
+        }
+    }
+    
+    public void startGame(){
+        time=new Thread(this);
+        time.start();
+    }
+    
+    @Override
+    public void run(){
+        
+        while(time!=null){
+            long draw=1000/FPS;
+            long nextDraw=System.currentTimeMillis()+draw;
+            long remaining=nextDraw-System.currentTimeMillis();
+            repaint();
+            try {
+                Thread.sleep(remaining);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(GamePanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
     }
 }
