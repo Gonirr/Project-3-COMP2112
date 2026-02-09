@@ -3,6 +3,8 @@ public class GraphList {
     private int V;
     private int E;
     private LinkedList<Edge> adj[];
+    static int weightSum=0;
+    
     public GraphList(int V,int E){
         this.V=V;
         this.E=E;
@@ -17,6 +19,7 @@ public class GraphList {
         adj[v1].addLast(e1);
         Edge e2=new Edge(v2,v1,weight);
         adj[v2].addLast(e2);
+        weightSum+=weight;
     }
     
     @Override
@@ -30,6 +33,10 @@ public class GraphList {
 
     public LinkedList<Edge>[] getAdj() {
         return adj;
+    }
+
+    public static int getWeightSum() {
+        return weightSum;
     }
     
 }

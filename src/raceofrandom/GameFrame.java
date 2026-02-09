@@ -1,5 +1,6 @@
 package raceofrandom;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -15,6 +16,7 @@ public class GameFrame extends JFrame{
     CardLayout card;
     GamePanel gamepanel;
     JPanel ınputpanel;
+    final int carLimit=15;
     
     GameFrame(){
         card=new CardLayout();
@@ -24,19 +26,23 @@ public class GameFrame extends JFrame{
         ınputpanel.setPreferredSize(new Dimension(320,60));
         JTextField text=new JTextField(10);
         JButton button=new JButton("submit");
-        JLabel label=new JLabel("Please enter how many cars you want in the race (1-15):");
+        JLabel label=new JLabel("Please enter how many cars you want in the race (1-"+carLimit+"}:");
         
         
         button.addActionListener(new ActionListener(){
+            
             @Override
             public void actionPerformed(ActionEvent e){
                 
                 String s=text.getText();
                 if(stringCheck(s)){
                     card.last(getContentPane());
+                    redoFrame();
                 }
                 else{
-                    label.setText("Wrong input, please choose a integer between (1-15):");
+                    label.setText("Wrong input, please choose a integer between (1-"+carLimit+"}:");
+                    label.setForeground(Color.red);
+                    
                 }
             }
         });
@@ -47,9 +53,9 @@ public class GameFrame extends JFrame{
         this.add(gamepanel);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
-        //this.setSize(new Dimension(500,500));
-        this.setLocationRelativeTo(null);
+        //this.setPreferredSize(new Dimension(500,500));
         this.pack();
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
         
     }
@@ -57,12 +63,17 @@ public class GameFrame extends JFrame{
     public boolean stringCheck(String s){
         try{
             int is=Integer.parseInt(s);
-            if(0<is&&is<=15){
+            if(0<is&&is<=carLimit){
                 return true;
             }
             return false;
         }
         catch(NumberFormatException e){return false;}
+    }
+    public void redoFrame(){
+        gamepanel.setPreferredSize(new Dimension(gamepanel.width,gamepanel.height));
+        this.pack();
+        this.setLocationRelativeTo(null);
     }
     
 }
