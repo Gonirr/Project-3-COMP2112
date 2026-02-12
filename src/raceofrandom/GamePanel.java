@@ -71,18 +71,21 @@ public class GamePanel extends JPanel implements Runnable{
     
     public void paint(Graphics g){
         Graphics2D g2d=(Graphics2D) g;
-        int partion=height/(carNum+1);
+        int carPlacement=height/(carNum+1);
+        int partition=height/(carNum*2+1);
         for(int i=0;i<cars.length;i++){
             cars[i].road+=scalew*cars[i].chooseRandomCheckpoint(racetrack);
             //System.out.println(rectLength);
             //g2d.drawRect(, , 100, 100);
-            g2d.fillRect(0, partion*(i+1), cars[i].road, 100);
+            
+            g2d.fillRect(0, carPlacement*(i+1)-(partition/2), cars[i].road, partition);
             //System.out.println(i);
         }
-        
+        /*
         for(int i=0;i<scalew;i++){
             g2d.drawLine(weightSum*i, 0, weightSum*i, height);
         }
+        */
     }
     
     public void startGame(){
@@ -97,7 +100,9 @@ public class GamePanel extends JPanel implements Runnable{
             long draw=1000/FPS;
             long nextDraw=System.currentTimeMillis()+draw;
             long remaining=nextDraw-System.currentTimeMillis();
+            
             repaint();
+            
             try {
                 Thread.sleep(remaining);
             } catch (InterruptedException ex) {
