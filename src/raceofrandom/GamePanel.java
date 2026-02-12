@@ -17,35 +17,45 @@ public class GamePanel extends JPanel implements Runnable{
     
     final private int height;
     final private int width;
-    final int Height=800;
-    final int Width=1400;
     int scaleh;
     int scalew;
     int weightSum;
+    
+    final int Height=800;
+    final int Width=1400;
     final int FPS=60;
     
     private int carNum;
     Car[] cars;
     Thread time;
     int colorChanger=0;
-    
+    int pLength;
+    int carPlacement;
     GamePanel(int carNum){
+        //racetrack and initializing varibales
         racetrack=read("/racetrack.txt");
         this.carNum=carNum;
-        cars=new Car[carNum];
-        for(int i=0;i<cars.length;i++){
-            cars[i]=new Car();
-        }
+        
+        //adjusting screen hiegh and width
         this.weightSum=racetrack.getWeightSum();
         scaleh=Height/weightSum;
         scalew=Width/weightSum;
         this.height=scaleh*weightSum;
         this.width=scalew*weightSum;
+        
+        //calculating car and raod palacement
+        pLength=height/(carNum*2+1);
+        carPlacement=height/(carNum+1);
+        
+        //initializing cars
+        cars=new Car[carNum];
+        for(int i=0;i<cars.length;i++){
+            cars[i]=new Car(0, carPlacement*(i+1)-(pLength/2), pLength);
+        }
+        
+        //final touches
         this.setPreferredSize(new Dimension(width,height));
         startGame();
-        //System.out.println("w:"+width+" h:"+height+" sum:"+weightSum);
-        //System.out.println("scalew:"+scalew);
-        //System.out.println(racetrack.toString());
     }
     
     public GraphList read(String resource){
@@ -72,34 +82,28 @@ public class GamePanel extends JPanel implements Runnable{
         return width;
     }
     
-    public void paint(Graphics g){
+    public void paintComponent(Graphics g){
+        
         Graphics2D g2d=(Graphics2D) g;
-        int carPlacement=height/(carNum+1);
-        int partition=height/(carNum*2+1);
+        //g2d.draw(cars[0].r);
+        
         for(int i=0;i<cars.length;i++){
-            int newRoad=scalew*cars[i].chooseRandomCheckpoint(racetrack);
+            int newRoad=pLength*cars[i].chooseRandomCheckpoint(racetrack);
             cars[i].road+=newRoad;
             if(colorChanger%2==0){
               g2d.setPaint(Color.DARK_GRAY);
-              g2d.fillRect(cars[i].road-newRoad, carPlacement*(i+1)-(partition/2), cars[i].road, partition);
+              g2d.fillRect(cars[i].road-newRoad, carPlacement*(i+1)-(pLength/2), cars[i].road, pLength);
             }
             else{
                 g2d.setPaint(Color.GRAY);
-                g2d.fillRect(cars[i].road-newRoad, carPlacement*(i+1)-(partition/2), cars[i].road, partition);
+                g2d.fillRect(cars[i].road-newRoad, carPlacement*(i+1)-(pLength/2), cars[i].road, pLength);
             }
             
             g2d.setPaint(Color.RED);
-            g2d.setStroke(new BasicStroke(5));
-            //g2d.drawLine(cars[i].road, carPlacement*(i+1)-(partition/2), cars[i].road, carPlacement*(i+1)-(partition/2));
-            g2d.drawString(cars[i].currentV+"", cars[i].road, carPlacement*(i+1)-(partition/2)-1);
+            g2d.drawString(cars[i].currentV+"", cars[i].road, carPlacement*(i+1)-(pLength/2)-1);
             
         }
         colorChanger++;
-        /*
-        for(int i=0;i<scalew;i++){
-            g2d.drawLine(weightSum*i, 0, weightSum*i, height);
-        }
-        */
     }
     
     public void startGame(){

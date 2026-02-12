@@ -5,11 +5,16 @@ import java.awt.Rectangle;
 public class Car {
     static int ID=0;
     final int velocity=1;
-    Rectangle r;
+    public Rectangle r;
     int currentV=0;
     int road=0;
+    int newRoad=0;
     
-    Car(){
+    int x;
+    int y;
+    
+    Car(int x, int y,int pLength){
+        r=new Rectangle(x,y,pLength,pLength);
         ID++;
     }
     
@@ -26,4 +31,6 @@ public class Car {
         currentV=e.getV2();
         return e.getWeigth();
     }
+    
+    
 }
