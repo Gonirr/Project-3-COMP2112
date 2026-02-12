@@ -5,7 +5,6 @@ import java.awt.Rectangle;
 public class Car {
     static int ID=0;
     final int velocity=1;
-    int currV=0;
     Rectangle r;
     int currentV=0;
     int road=0;

@@ -1,5 +1,7 @@
 package raceofrandom;
 import Graph.GraphList;
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -25,6 +27,7 @@ public class GamePanel extends JPanel implements Runnable{
     private int carNum;
     Car[] cars;
     Thread time;
+    int colorChanger=0;
     
     GamePanel(int carNum){
         racetrack=read("/racetrack.txt");
@@ -74,13 +77,24 @@ public class GamePanel extends JPanel implements Runnable{
         int carPlacement=height/(carNum+1);
         int partition=height/(carNum*2+1);
         for(int i=0;i<cars.length;i++){
-            cars[i].road+=scalew*cars[i].chooseRandomCheckpoint(racetrack);
-            //System.out.println(rectLength);
-            //g2d.drawRect(, , 100, 100);
+            int newRoad=scalew*cars[i].chooseRandomCheckpoint(racetrack);
+            cars[i].road+=newRoad;
+            if(colorChanger%2==0){
+              g2d.setPaint(Color.DARK_GRAY);
+              g2d.fillRect(cars[i].road-newRoad, carPlacement*(i+1)-(partition/2), cars[i].road, partition);
+            }
+            else{
+                g2d.setPaint(Color.GRAY);
+                g2d.fillRect(cars[i].road-newRoad, carPlacement*(i+1)-(partition/2), cars[i].road, partition);
+            }
             
-            g2d.fillRect(0, carPlacement*(i+1)-(partition/2), cars[i].road, partition);
-            //System.out.println(i);
+            g2d.setPaint(Color.RED);
+            g2d.setStroke(new BasicStroke(5));
+            //g2d.drawLine(cars[i].road, carPlacement*(i+1)-(partition/2), cars[i].road, carPlacement*(i+1)-(partition/2));
+            g2d.drawString(cars[i].currentV+"", cars[i].road, carPlacement*(i+1)-(partition/2)-1);
+            
         }
+        colorChanger++;
         /*
         for(int i=0;i<scalew;i++){
             g2d.drawLine(weightSum*i, 0, weightSum*i, height);
