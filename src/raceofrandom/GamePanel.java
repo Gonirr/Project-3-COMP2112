@@ -5,55 +5,65 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyListener;
 import java.io.InputStream;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
 
-public class GamePanel extends JPanel implements Runnable{
+public class GamePanel extends JPanel implements Runnable {
     
     GraphList racetrack;
     
-    final private int height;
-    final private int width;
-    int scaleh;
-    int scalew;
-    int weightSum;
+    //for calculating the size of the screen according to given racetrack (graph)
+    final public int height;
+    final public int width;
+    final int weightSum;
     
+    //fianlized variables
     final int Height=800;
     final int Width=1400;
-    final int FPS=60;
+    final int FPS=20;
     
-    private int carNum;
-    Car[] cars;
-    Thread time;
-    int colorChanger=0;
+    //other
+    int carNum;
     int pLength;
     int carPlacement;
-    GamePanel(int carNum){
+    int startX=0;
+    
+    PartitionManager pm;
+    Car[] cars;
+    Thread time;
+    GameKeyListener kl;
+    
+    GamePanel(int carNum,GameKeyListener kl){
         //racetrack and initializing varibales
         racetrack=read("/racetrack.txt");
         this.carNum=carNum;
         
-        //adjusting screen hiegh and width
+        //adjusting screen hiegh
         this.weightSum=racetrack.getWeightSum();
-        scaleh=Height/weightSum;
-        scalew=Width/weightSum;
+        int scaleh=Height/weightSum;
         this.height=scaleh*weightSum;
-        this.width=scalew*weightSum;
         
-        //calculating car and raod palacement
+        //calculating car and raod placement
         pLength=height/(carNum*2+1);
         carPlacement=height/(carNum+1);
         
-        //initializing cars
+        //width
+        int scalew=Width/pLength;
+        this.width=scalew*pLength;
+        
+        //initializing cars and calculating thier placement on the y-axisis
         cars=new Car[carNum];
         for(int i=0;i<cars.length;i++){
             cars[i]=new Car(0, carPlacement*(i+1)-(pLength/2), pLength);
         }
         
         //final touches
+        this.kl=kl;
+        pm=new PartitionManager(this);
         this.setPreferredSize(new Dimension(width,height));
         startGame();
     }
@@ -70,41 +80,16 @@ public class GamePanel extends JPanel implements Runnable{
         return rt;
     }
     
-    public void setCarNum(int carNum) {
-        this.carNum = carNum;
-    }
-    
-    public int getHeight() {
-        return height;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-    
     public void paintComponent(Graphics g){
         
         Graphics2D g2d=(Graphics2D) g;
+        update();
+        pm.draw(g);
         //g2d.draw(cars[0].r);
+        /*
         
-        for(int i=0;i<cars.length;i++){
-            int newRoad=pLength*cars[i].chooseRandomCheckpoint(racetrack);
-            cars[i].road+=newRoad;
-            if(colorChanger%2==0){
-              g2d.setPaint(Color.DARK_GRAY);
-              g2d.fillRect(cars[i].road-newRoad, carPlacement*(i+1)-(pLength/2), cars[i].road, pLength);
-            }
-            else{
-                g2d.setPaint(Color.GRAY);
-                g2d.fillRect(cars[i].road-newRoad, carPlacement*(i+1)-(pLength/2), cars[i].road, pLength);
-            }
-            
-            g2d.setPaint(Color.RED);
-            g2d.drawString(cars[i].currentV+"", cars[i].road, carPlacement*(i+1)-(pLength/2)-1);
-            
-        }
-        colorChanger++;
-    }
+        */
+    } 
     
     public void startGame(){
         time=new Thread(this);
@@ -128,5 +113,24 @@ public class GamePanel extends JPanel implements Runnable{
             }
         }
         
+    }
+    
+    public void update(){
+        if(kl.moving==true&&kl.left==true&&startX>=0){startX+=pLength;}
+        if(kl.moving==true&&kl.right==true){startX-=pLength;}
+        //System.out.println(startX);
+    }
+    
+    //{Getters and Setters}
+    public void setCarNum(int carNum) {
+        this.carNum = carNum;
+    }
+    
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
     }
 }

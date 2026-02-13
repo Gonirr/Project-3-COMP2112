@@ -2,7 +2,6 @@ package raceofrandom;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -16,6 +15,7 @@ public class GameFrame extends JFrame{
     CardLayout card;
     GamePanel gamepanel;
     JPanel ınputpanel;
+    GameKeyListener kl;
     final int carLimit=15;
     
     GameFrame(){
@@ -27,7 +27,7 @@ public class GameFrame extends JFrame{
         JTextField text=new JTextField(10);
         JButton button=new JButton("submit");
         JLabel label=new JLabel("Please enter how many cars you want in the race (1-"+carLimit+"}:");
-        
+        kl=new GameKeyListener();
         
         button.addActionListener(new ActionListener(){
             
@@ -36,7 +36,14 @@ public class GameFrame extends JFrame{
                 
                 String s=text.getText();
                 if(stringCheck(s)){
+                    //switching off the focus
+                    button.setFocusable(false);
+                    label.setFocusable(false);
+                    
+                    //adding gampanel and adjusting
                     redoFrame(Integer.parseInt(s));
+                    
+                    //switching cards
                     card.last(getContentPane());
                 }
                 else{
@@ -71,7 +78,10 @@ public class GameFrame extends JFrame{
     }
     
     public void redoFrame(int carNum){
-        gamepanel=new GamePanel(carNum);
+        gamepanel=new GamePanel(carNum,kl);
+        this.setFocusable(true);
+        this.addKeyListener(kl);
+        this.requestFocus();
         this.add(gamepanel);
         //gamepanel.setPreferredSize(new Dimension(gamepanel.getWidth(),gamepanel.getHeight()));
         this.pack();
