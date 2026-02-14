@@ -20,28 +20,50 @@ public class PartitionManager {
         for(int i=0;i<x;i++){
             for(int k=0;k<y;k++){
                 partitions[i][k]=new Partition(gp.pLength);
+                //if(k%2!=0){
+                //    partitions[i][k].isRoad=true;
+                //}
                 //System.out.println(partitions[i][k]);
             }
         }
     }
     
-    public void draw(Graphics g){
+    public void drawBackground (Graphics g){
         Graphics2D g2d=(Graphics2D) g;
-        //int screenPartition=gp.startX/gp.pLength;
         for(int x=0;x<gp.width;x+=gp.pLength){
             for(int y=0;y<gp.height;y+=gp.pLength){
-                if(x/gp.pLength%2==0){
-                    g2d.setColor(Color.GREEN);
-                    g2d.fillRect(x+gp.startX, y, gp.pLength, gp.pLength);
+                System.out.println((x+gp.startX)/gp.pLength);
+                if(partitions[(x+gp.startX)/gp.pLength][y/gp.pLength].isRoad==true){
+                    if(colorChanger%2==0){
+                        g2d.setColor(Color.DARK_GRAY);
+                        g2d.fillRect(gp.startX+x, y, gp.pLength, gp.pLength);
+                    }
+                    else{
+                        g2d.setColor(Color.GRAY);
+                        g2d.fillRect(gp.startX+x, y, gp.pLength, gp.pLength);
+                    }
+                    
                 }
                 else{
-                    g2d.setColor(Color.BLACK);
-                    g2d.fillRect(x+gp.startX, y, gp.pLength, gp.pLength);
+                   g2d.setColor(Color.GREEN);
+                   g2d.fillRect(x+gp.startX, y, gp.pLength, gp.pLength);  
                 }
                 
             }
         }
         colorChanger++;
+        
+        /*
+        if(x/gp.pLength%2==0){
+            g2d.setColor(Color.GREEN);
+            g2d.fillRect(x+gp.startX, y, gp.pLength, gp.pLength);
+        }
+        else{
+            g2d.setColor(Color.BLACK);
+            g2d.fillRect(x+gp.startX, y, gp.pLength, gp.pLength);
+        }
+        */
+        
         /*
         for(int i=0;i<cars.length;i++){
             int newRoad=partition*cars[i].chooseRandomCheckpoint(racetrack);
@@ -64,4 +86,16 @@ public class PartitionManager {
         colorChanger++;
         */
     }
+    
+    public void markRoad(){
+        for(int i=0;i<gp.cars.length;i++){
+            int newRoad=gp.cars[i].chooseRandomCheckpoint(gp.racetrack);
+            int startPoint=gp.cars[i].road;
+            for(int k=0;k<newRoad;k++){
+                partitions[startPoint+k][1+i*2].isRoad=true;
+            }
+            gp.cars[i].road+=newRoad;
+        }
+    }
+    
 }

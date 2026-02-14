@@ -1,11 +1,9 @@
 package raceofrandom;
 import Graph.GraphList;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.KeyListener;
 import java.io.InputStream;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -24,13 +22,14 @@ public class GamePanel extends JPanel implements Runnable {
     //fianlized variables
     final int Height=800;
     final int Width=1400;
-    final int FPS=20;
+    final int FPS=10;
     
     //other
     int carNum;
     int pLength;
     int carPlacement;
     int startX=0;
+    int colorChanger=0;
     
     PartitionManager pm;
     Car[] cars;
@@ -83,12 +82,10 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent(Graphics g){
         
         Graphics2D g2d=(Graphics2D) g;
-        update();
-        pm.draw(g);
-        //g2d.draw(cars[0].r);
-        /*
-        
-        */
+        updatePosition();
+        //pm.markRoad();
+        //pm.drawBackground(g);
+        drawRoad(g);
     } 
     
     public void startGame(){
@@ -115,10 +112,32 @@ public class GamePanel extends JPanel implements Runnable {
         
     }
     
-    public void update(){
-        if(kl.moving==true&&kl.left==true&&startX>=0){startX+=pLength;}
-        if(kl.moving==true&&kl.right==true){startX-=pLength;}
+    public void updatePosition(){
+        if(kl.moving==true&&kl.left==true){startX+=pLength;}
+        else if(kl.moving==true&&kl.right==true){startX-=pLength;}
         //System.out.println(startX);
+    }
+    
+    public void drawRoad(Graphics g){
+        Graphics2D g2d=(Graphics2D)g;
+        for(int i=0;i<cars.length;i++){
+            int newRoad=pLength*cars[i].chooseRandomCheckpoint(racetrack);
+            cars[i].road+=newRoad;
+            if(colorChanger%2==0){
+              g2d.setPaint(Color.DARK_GRAY);
+              g2d.fillRect(cars[i].road-newRoad, carPlacement*(i+1)-(pLength/2), cars[i].road, pLength);
+            }
+            else{
+                g2d.setPaint(Color.GRAY);
+                g2d.fillRect(cars[i].road-newRoad, carPlacement*(i+1)-(pLength/2), cars[i].road, pLength);
+            }
+            
+            g2d.setPaint(Color.RED);
+            //g2d.drawLine(cars[i].road, carPlacement*(i+1)-(pLength/2), cars[i].road, carPlacement*(i+1)-(pLength/2));
+            g2d.drawString(cars[i].currentV+"", cars[i].road, carPlacement*(i+1)-(pLength/2)-1);
+            
+        }
+        colorChanger++;
     }
     
     //{Getters and Setters}
