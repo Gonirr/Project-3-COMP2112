@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 public class Partition extends JPanel{
     int length;
     JLabel label;
-    public boolean isRoad;
+    public boolean isRoad=false;
     Partition (int length){
         this.length=length;
         this.setSize(new Dimension(length,length));
