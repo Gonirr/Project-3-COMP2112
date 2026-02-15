@@ -26,18 +26,25 @@ public class PartitionManager {
     
     public void drawBackground (Graphics g){
         Graphics2D g2d=(Graphics2D) g;
-        for(int x=0;x<gp.width;x+=gp.pLength){
-            for(int i=0;i<gp.cars.length;i++){
-                System.out.println((x+gp.startX)/gp.pLength);
-                if(x+gp.startX%2==0){
-                    g2d.setColor(Color.DARK_GRAY);
-                    g2d.fillRect(gp.startX+x, gp.carPlacement*(i+1)-(gp.pLength/2), gp.pLength, gp.pLength);
-                }
-                else{
+        for(int i=0;i<gp.cars.length;i++){
+            if(gp.kl.Continue==true){
+                int newRoad=gp.pLength*gp.cars[i].chooseRandomCheckpoint(gp.racetrack);
+                gp.cars[i].road+=newRoad;
+            }
+            
+            for(int x=0;x<gp.cars[i].road;x+=gp.pLength){
+                if(gp.cars[i].road>x+gp.pLength){
                     g2d.setColor(Color.GRAY);
                     g2d.fillRect(gp.startX+x, gp.carPlacement*(i+1)-(gp.pLength/2), gp.pLength, gp.pLength);
                 }
+                else{
+                    g2d.setColor(Color.DARK_GRAY);
+                    g2d.fillRect(gp.startX+x, gp.carPlacement*(i+1)-(gp.pLength/2), gp.pLength, gp.pLength);
+                }
+                System.out.println("x:"+(x+gp.pLength)+" r:"+gp.cars[i].road);
             }
+            //g2d.setColor(Color.red);
+            //g2d.drawString(""+gp.cars[i].currentV, gp.cars[i].road, gp.carPlacement*(i+1)-(gp.pLength/2));
         }
         
         /*
