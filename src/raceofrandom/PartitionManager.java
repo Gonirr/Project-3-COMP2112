@@ -3,6 +3,7 @@ package raceofrandom;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import javax.swing.JLabel;
 
 public class PartitionManager {
     
@@ -20,6 +21,7 @@ public class PartitionManager {
         for(int i=0;i<x;i++){
             for(int k=0;k<y;k++){
                 partitions[i][k]=new Partition(gp.pLength);
+                gp.add(partitions[i][k].label);
             }
         }
     }
@@ -34,7 +36,6 @@ public class PartitionManager {
                 gp.cars[i].road+=newRoad;
             }
             for(int x=0;x<gp.cars[i].road-gp.startX;x+=length){
-                System.out.println((gp.cars[i].road-gp.startX));
                 int y=gp.carPlacement*(i+1)-(length/2);
                 if(gp.cars[i].road>x+length){
                     g2d.setColor(Color.GRAY);
@@ -44,52 +45,9 @@ public class PartitionManager {
                     g2d.setColor(Color.DARK_GRAY);
                     g2d.fillRect(gp.startX+x, y, length, length);
                 }
+                
             }
         }
         
-        /*
-        if(x/gp.pLength%2==0){
-            g2d.setColor(Color.GREEN);
-            g2d.fillRect(x+gp.startX, y, gp.pLength, gp.pLength);
-        }
-        else{
-            g2d.setColor(Color.BLACK);
-            g2d.fillRect(x+gp.startX, y, gp.pLength, gp.pLength);
-        }
-        */
-        
-        /*
-        for(int i=0;i<cars.length;i++){
-            int newRoad=partition*cars[i].chooseRandomCheckpoint(racetrack);
-            cars[i].road+=newRoad;
-            if(colorChanger%2==0){
-              g2d.setPaint(Color.DARK_GRAY);
-              g2d.fillRect(cars[i].road-newRoad, carPlacement*(i+1)-(partition/2), cars[i].road, partition);
-            }
-            else{
-                g2d.setPaint(Color.GRAY);
-                g2d.fillRect(cars[i].road-newRoad, carPlacement*(i+1)-(partition/2), cars[i].road, partition);
-            }
-            
-            g2d.setPaint(Color.RED);
-            g2d.setStroke(new BasicStroke(5));
-            //g2d.drawLine(cars[i].road, carPlacement*(i+1)-(partition/2), cars[i].road, carPlacement*(i+1)-(partition/2));
-            g2d.drawString(cars[i].currentV+"", cars[i].road, carPlacement*(i+1)-(partition/2)-1);
-            
-        }
-        colorChanger++;
-        */
     }
-    
-    public void markRoad(){
-        for(int i=0;i<gp.cars.length;i++){
-            int newRoad=gp.cars[i].chooseRandomCheckpoint(gp.racetrack);
-            int startPoint=gp.cars[i].road;
-            for(int k=0;k<newRoad;k++){
-                partitions[startPoint+k][1+i*2].isRoad=true;
-            }
-            gp.cars[i].road+=newRoad;
-        }
-    }
-    
 }

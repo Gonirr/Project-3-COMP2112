@@ -8,11 +8,13 @@ import java.io.InputStream;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable {
     
     GraphList racetrack;
+    JLabel label;
     
     //for calculating the size of the screen according to given racetrack (graph)
     final public int height;
@@ -62,6 +64,9 @@ public class GamePanel extends JPanel implements Runnable {
         
         //final touches
         this.kl=kl;
+        label= new JLabel();
+        this.add(label);
+        //label.setText("press enter to continue, press a and d to move through out the map.");
         pm=new PartitionManager(this);
         this.setPreferredSize(new Dimension(width,height));
         startGame();
@@ -83,10 +88,7 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2d=(Graphics2D) g;
         updatePosition();
-        //pm.markRoad();
         pm.drawBackground(g);
-        //drawRoad(g);
-        
     } 
     
     public void startGame(){
@@ -114,31 +116,8 @@ public class GamePanel extends JPanel implements Runnable {
     }
     
     public void updatePosition(){
-        if(kl.moving==true&&kl.left==true){startX+=pLength;}
+        if(kl.moving==true&&kl.left==true&&startX<0){startX+=pLength;}
         else if(kl.moving==true&&kl.right==true){startX-=pLength;}
-        //System.out.println(startX);
-    }
-    
-    public void drawRoad(Graphics g){
-        Graphics2D g2d=(Graphics2D)g;
-        for(int i=0;i<cars.length;i++){
-            int newRoad=pLength*cars[i].chooseRandomCheckpoint(racetrack);
-            cars[i].road+=newRoad;
-            if(colorChanger%2==0){
-              g2d.setPaint(Color.DARK_GRAY);
-              g2d.fillRect(cars[i].road-newRoad, carPlacement*(i+1)-(pLength/2), cars[i].road, pLength);
-            }
-            else{
-                g2d.setPaint(Color.GRAY);
-                g2d.fillRect(cars[i].road-newRoad, carPlacement*(i+1)-(pLength/2), cars[i].road, pLength);
-            }
-            
-            g2d.setPaint(Color.RED);
-            //g2d.drawLine(cars[i].road, carPlacement*(i+1)-(pLength/2), cars[i].road, carPlacement*(i+1)-(pLength/2));
-            g2d.drawString(cars[i].currentV+"", cars[i].road, carPlacement*(i+1)-(pLength/2)-1);
-            
-        }
-        colorChanger++;
     }
     
     //{Getters and Setters}
