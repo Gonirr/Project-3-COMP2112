@@ -89,6 +89,10 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2d=(Graphics2D) g;
         updatePosition();
         pm.drawBackground(g);
+        for(int i=0;i<cars.length;i++){
+            cars[i].setX(startX);
+            cars[i].drawCar(g);
+        }
     } 
     
     public void startGame(){

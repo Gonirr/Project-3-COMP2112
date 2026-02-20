@@ -1,10 +1,12 @@
 package raceofrandom;
 import Graph.*;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-public class Car {
+public class Car{
     static int ID=0;
-    final int velocity=1;
+    final int speed=1;
     public Rectangle r;
     int currentV=0;
     int road=0;
@@ -13,9 +15,17 @@ public class Car {
     int x;
     int y;
     
-    Car(int x, int y,int pLength){
+    final int FPS=10;
+    
+    Thread time;
+    
+    Car(int x, int y,int pLength) {
+        this.x=x;
+        this.y=y;
+        time= new Thread();
         r=new Rectangle(x,y,pLength,pLength);
         ID++;
+        time.start();
     }
     
     public int chooseRandomCheckpoint(GraphList g){
@@ -25,12 +35,29 @@ public class Car {
         int randomNum=(int)(Math.random()*adj[currentV].getNodeNum()+1);
         for(int i=1;i<randomNum;i++){
             n=n.getNext();
-            //System.out.println(n);
         }
         Edge e=(Edge)n.getData();
         currentV=e.getV2();
         return e.getWeigth();
     }
     
+    public void drawCar(Graphics g){
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.draw(r);
+    }
     
+    public void setX(int startX){
+        x+=speed;
+        r.setLocation(x+startX, y);
+    }
+    
+    /*
+    @Override
+    public void run() {
+        while(true==true){
+            int time=(newRoad/speed)*1000;
+            x+=speed;
+        }
+    }
+    */
 }

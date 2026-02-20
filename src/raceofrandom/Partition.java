@@ -9,11 +9,9 @@ import javax.swing.JPanel;
 
 public class Partition extends JPanel{
     int length;
-    JLabel label;
     public boolean isRoad=false;
     Partition (int length){
         this.length=length;
-        label=new JLabel();
         this.setSize(new Dimension(length,length));
         this.setBackground(Color.red);
     }

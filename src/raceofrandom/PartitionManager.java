@@ -21,7 +21,6 @@ public class PartitionManager {
         for(int i=0;i<x;i++){
             for(int k=0;k<y;k++){
                 partitions[i][k]=new Partition(gp.pLength);
-                gp.add(partitions[i][k].label);
             }
         }
     }
@@ -44,10 +43,12 @@ public class PartitionManager {
                 if(gp.cars[i].road==x+length){
                     g2d.setColor(Color.DARK_GRAY);
                     g2d.fillRect(gp.startX+x, y, length, length);
+                    g2d.setColor(Color.red);
+                    g2d.drawString(""+gp.cars[i].currentV, gp.startX+x+(length/2), y+(length/2));
                 }
-                
             }
         }
         
     }
+    
 }
