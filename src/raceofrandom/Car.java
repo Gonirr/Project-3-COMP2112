@@ -6,26 +6,21 @@ import java.awt.Rectangle;
 
 public class Car{
     static int ID=0;
-    final int speed=1;
+    final int speed=15;
     public Rectangle r;
     int currentV=0;
     int road=0;
     int newRoad=0;
-    
+    int length;
     int x;
     int y;
     
-    final int FPS=10;
-    
-    Thread time;
-    
-    Car(int x, int y,int pLength) {
+    Car(int x, int y,int length) {
         this.x=x;
         this.y=y;
-        time= new Thread();
-        r=new Rectangle(x,y,pLength,pLength);
+        this.length=length;
+        r=new Rectangle(x,y,length,length);
         ID++;
-        time.start();
     }
     
     public int chooseRandomCheckpoint(GraphList g){
@@ -47,7 +42,10 @@ public class Car{
     }
     
     public void setX(int startX){
-        x+=speed;
+        if(road>=x+length){
+            x+=speed;
+        }
+        System.out.println("x="+x+" road="+road);
         r.setLocation(x+startX, y);
     }
     

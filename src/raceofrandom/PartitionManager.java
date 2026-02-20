@@ -32,6 +32,7 @@ public class PartitionManager {
             int length=gp.pLength;
             if(gp.kl.Continue==true){
                 int newRoad=length*gp.cars[i].chooseRandomCheckpoint(gp.racetrack);
+                gp.cars[i].newRoad=newRoad;
                 gp.cars[i].road+=newRoad;
             }
             for(int x=0;x<gp.cars[i].road-gp.startX;x+=length){
